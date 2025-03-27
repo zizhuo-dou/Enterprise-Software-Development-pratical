@@ -1,0 +1,12 @@
+Year: 1990,	Population(mil):	123.5,	Population affected by Pollution(mil):	114.2730051
+Year: 1995,	Population(mil):	125.4,	Population affected by Pollution(mil):	116.0028638
+Year: 2000,	Population(mil):	126.8,	Population affected by Pollution(mil):	116.3355693
+Year: 2005,	Population(mil):	127.8,	Population affected by Pollution(mil):	117.6911265
+Year: 2010,	Population(mil):	128.1,	Population affected by Pollution(mil):	118.6062928
+Year: 2011,	Population(mil):	127.8,	Population affected by Pollution(mil):	118.292303
+Year: 2012,	Population(mil):	127.5,	Population affected by Pollution(mil):	113.6426931
+Year: 2013,	Population(mil):	127.3,	Population affected by Pollution(mil):	114.3181141
+Year: 2014,	Population(mil):	127,	Population affected by Pollution(mil):   111.5309294
+Year: 2015,	Population(mil):	126.8,	Population affected by Pollution(mil):	112.4318487
+Year: 2016,	Population(mil):	126.5,	Population affected by Pollution(mil):	95.39632102
+Year: 2017,	Population(mil):	126.3,	Population affected by Pollution(mil):	96.94978489
