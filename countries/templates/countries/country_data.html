@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>{{ country }} Population & Pollution Data</title>
+</head>
+<body>
+    <h1>Data for {{ country }}</h1>
+    <table border="1">
+        <tr>
+            <th>Year</th>
+            <th>Population (Million)</th>
+            <th>Pollution Affected (Million)</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td>{{ row.year }}</td>
+            <td>{{ row.population_mil }}</td>
+            <td>{{ row.pollution_affected_mil }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

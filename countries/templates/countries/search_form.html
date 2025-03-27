@@ -1,0 +1,17 @@
+<html>
+<head><title>Search Country Data</title></head>
+<body>
+    <h1>Search by Country and Year</h1>
+    <form method="POST">
+        {% csrf_token %}
+        Country: <input type="text" name="country"><br>
+        Year: <input type="number" name="year"><br>
+        <input type="submit" value="Search">
+    </form>
+
+    {% if result %}
+        <h2>Result:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>
