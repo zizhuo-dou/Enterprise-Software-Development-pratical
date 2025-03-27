@@ -1,0 +1,39 @@
+# Virtual environment
+.venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/
+
+# Django-specific
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Migrations (optional: sometimes excluded, sometimes tracked)
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Environment variables & secrets
+.env
+.env.*
+
+# Build artifacts
+*.egg-info/
+build/
+dist/
+
+# Jupyter (if used)
+.ipynb_checkpoints/
