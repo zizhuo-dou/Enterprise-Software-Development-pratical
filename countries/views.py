@@ -16,7 +16,7 @@ def search_country_year(request):
 
         try:
             data = CountryData.objects.get(country=country, year=year)
-            result = f"Country: {data.country},\n Year: {data.year},\n Population(mil): {data.population_mil},\n Population Affected by Pollution(mil): {data.pollution_affected_mil}"
+            result = f"Country: {data.country}\n Year: {data.year}\n Population(mil): {data.population_mil}\n Population Affected by Pollution(mil): {data.pollution_affected_mil}"
         except CountryData.DoesNotExist:
             result = "No data found for that country and year."
 
