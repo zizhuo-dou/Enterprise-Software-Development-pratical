@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Country Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Population vs Pollution by Country</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <select name="country">
+            {% for country in countries %}
+                <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
+                    {{ country|title }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Show Chart">
+    </form>
+
+    {% if chart_data %}
+        <h2>{{ chart_data.country }} (1990–2017)</h2>
+        <canvas id="populationChart" width="600" height="400"></canvas>
+        <script>
+            const ctx = document.getElementById('populationChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ chart_data.years|safe }},
+                    datasets: [
+                        {
+                            label: 'Population (mil)',
+                            data: {{ chart_data.populations|safe }},
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Pollution Affected (mil)',
+                            data: {{ chart_data.pollution|safe }},
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    {% endif %}
+</body>
+</html>
