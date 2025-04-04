@@ -1,18 +1,101 @@
 <html>
-<head><title>Search Country Data</title></head>
+<head>
+    <title>Search Country Data</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            text-align: center; 
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 46px
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color:rgb(7, 52, 101);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color:rgb(15, 91, 172);
+        }
+
+        .result {
+            margin-top: 30px;
+            background-color:rgb(162, 215, 162);
+            padding: 15px;
+            border: 1px solidrgb(51, 65, 51);
+            border-radius: 6px;
+            font-size: 16px;
+        }
+    </style>
+</head>
 <body>
-    <h1>Search by Country and Year</h1>
+    <h1>Search</h1>
     <form method="POST">
         {% csrf_token %}
-        Country: <input type="text" name="country"><br>
-        Year: <input type="number" name="year"><br>
+        <label for="country">Country:</label>
+        <input type="text" name="country" id="country" placeholder="e.g. China">
+
+        <label for="year">Year:</label>
+        <input type="number" name="year" id="year" placeholder="e.g. 2000">
+
         <input type="submit" value="Search">
     </form>
 
     {% if result %}
-        <h2>Result:</h2>
-        <p>{{ result }}</p>
+        {% if result.country %}
+            <div class="result">
+                <h2>Result:</h2>
+                <p>Country: {{ result.country }}</p>
+                <p>Year: {{ result.year }}</p>
+                <p>Population (mil): {{ result.population }}</p>
+                <p>Population Affected by Pollution (mil): {{ result.pollution_affected }}</p>
+            </div>
+        {% else %}
+            <p>{{ result }}</p>
+        {% endif %}
     {% endif %}
+
 </body>
 </html>
 
