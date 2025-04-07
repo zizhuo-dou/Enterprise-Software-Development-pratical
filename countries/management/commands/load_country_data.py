@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 from django.core.management.base import BaseCommand
 from countries.models import CountryData
@@ -7,12 +8,22 @@ class Command(BaseCommand):
     help = 'Load all country data files into the database'
 
     def handle(self, *args, **kwargs):
+        print("🧹 Deleting all existing CountryData entries...")
+        CountryData.objects.all().delete()
         base_dir = Path(__file__).resolve().parent.parent.parent.parent
         data_dir = os.path.join(base_dir, 'countries/countries_data')
 
         for filename in os.listdir(data_dir):
             if filename.endswith('.txt'):
-                country_name = filename.replace('.txt', '').capitalize()
+                name_raw = filename.replace('.txt', '')
+                country_name = re.sub(r'([a-z])([A-Z])', r'\1 \2', name_raw).title()
+                abbreviations = {
+                    "Uk": "UK",
+                    "Northamerica": "North America",
+                    "Newzealand": "New Zealand", 
+                    "Southafrica": "South Africa",
+                }
+                country_name = abbreviations.get(country_name, country_name)
                 CountryData.objects.filter(country=country_name).delete()
                 print(f"Loading data for {country_name}...")
 
@@ -21,7 +32,7 @@ class Command(BaseCommand):
                     for line in file:
                         line = line.strip()
                         if not line:
-                            continue  # skip empty lines
+                            continue
 
                         parts = line.split(',')
                         if len(parts) < 3:
