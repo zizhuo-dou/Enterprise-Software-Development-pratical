@@ -7,4 +7,4 @@ class CountryData(models.Model):
     pollution_affected_mil = models.FloatField()
 
     def __str__(self):
-        return f'{self.year} - {self.country} - Pop: {self.population_mil}M, Pollution Affected: {self.pollution_affected_mil}M'
+        return f'{self.year} - {self.country} - Population: {self.population_mil}M, Population Affected by Pollution: {self.pollution_affected_mil}M'
