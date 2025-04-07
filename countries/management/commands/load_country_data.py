@@ -21,14 +21,16 @@ class Command(BaseCommand):
             "newzealand": "New Zealand",
         }
 
+        print("All .txt files found:")
+        print(os.listdir(data_dir))
         for filename in os.listdir(data_dir):
             if filename.endswith('.txt'):
-                name_raw = filename.replace('.txt', '').lower()
+                name_raw = filename.replace('.txt', '').replace('_', '').replace('-', '').lower()
                 country_name = display_names.get(name_raw, name_raw.title())
 
-                CountryData.objects.filter(country=country_name).delete()
-                print(f"📄 Loading data for {country_name}...")
+                print(f"📛 Raw: {name_raw} → Display: {country_name}")
 
+                CountryData.objects.filter(country=country_name).delete()
                 file_path = os.path.join(data_dir, filename)
 
                 with open(file_path, 'r') as file:
