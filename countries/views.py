@@ -6,7 +6,7 @@ from .models import CountryData
 
 COUNTRY_CHOICES = [
     'australia', 'brazil', 'china', 'france', 'japan',
-    'new Zealand', 'northAmerica', 'south Africa', 'uganda', 'uK',
+    'newZealand', 'northAmerica', 'southAfrica', 'uganda', 'uk',
     'yemen'
 ]
 

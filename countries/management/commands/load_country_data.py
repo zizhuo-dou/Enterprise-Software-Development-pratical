@@ -16,8 +16,6 @@ class Command(BaseCommand):
 
         display_names = {
             "uk": "UK",
-            "usa": "USA",
-            "uae": "UAE",
             "northamerica": "North America",
             "southafrica": "South Africa",
             "southamerica": "South America",
@@ -30,7 +28,6 @@ class Command(BaseCommand):
 
         for filename in os.listdir(data_dir):
             if filename.endswith('.txt'):
-                # Normalize and lower the filename
                 name_raw = filename.replace('.txt', '').replace('_', '').replace('-', '').lower()
                 country_name = display_names.get(name_raw, name_raw.title())  # Use clean name if mapped
 
