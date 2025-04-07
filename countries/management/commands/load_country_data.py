@@ -10,24 +10,27 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         print("🧹 Deleting all existing CountryData entries...")
         CountryData.objects.all().delete()
+
         base_dir = Path(__file__).resolve().parent.parent.parent.parent
         data_dir = os.path.join(base_dir, 'countries/countries_data')
 
+        display_names = {
+            "uk": "UK",
+            "northamerica": "North America",
+            "southafrica": "South Africa",
+            "newzealand": "New Zealand",
+        }
+
         for filename in os.listdir(data_dir):
             if filename.endswith('.txt'):
-                name_raw = filename.replace('.txt', '')
-                country_name = re.sub(r'([a-z])([A-Z])', r'\1 \2', name_raw).title()
-                abbreviations = {
-                    "Uk": "UK",
-                    "Northamerica": "North America",
-                    "Newzealand": "New Zealand", 
-                    "Southafrica": "South Africa",
-                }
-                country_name = abbreviations.get(country_name, country_name)
+                name_raw = filename.replace('.txt', '').lower()
+                country_name = display_names.get(name_raw, name_raw.title())
+
                 CountryData.objects.filter(country=country_name).delete()
-                print(f"Loading data for {country_name}...")
+                print(f"📄 Loading data for {country_name}...")
 
                 file_path = os.path.join(data_dir, filename)
+
                 with open(file_path, 'r') as file:
                     for line in file:
                         line = line.strip()
@@ -52,5 +55,5 @@ class Command(BaseCommand):
                             )
                             print(f"  ✔ Year {year} added for {country_name}")
                         except (IndexError, ValueError) as e:
-                            print(f"⚠️ Skipping bad line in {country_name}: {line.strip()} — {e}")
+                            print(f"⚠️ Skipping bad line in {country_name}: {line} — {e}")
                             continue
