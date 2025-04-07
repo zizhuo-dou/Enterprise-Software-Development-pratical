@@ -126,10 +126,8 @@
             }
         }
 
-        // Populate years on page load if country already selected (e.g. after POST)
         window.onload = function() {
             populateYears();
-            // Auto-select year if it was submitted
             const selectedYear = "{{ selected_year|default:'' }}";
             if (selectedYear) {
                 document.getElementById("year").value = selectedYear;
