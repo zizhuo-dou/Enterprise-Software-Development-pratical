@@ -16,23 +16,27 @@ class Command(BaseCommand):
 
         display_names = {
             "uk": "UK",
+            "usa": "USA",
+            "uae": "UAE",
             "northamerica": "North America",
             "southafrica": "South Africa",
-            "newzealand": "New Zealand",
+            "southamerica": "South America",
+            "newzealand": "New Zealand"
         }
 
-        print("All .txt files found:")
-        print(os.listdir(data_dir))
+        print("🧹 Deleting all existing CountryData entries...")
+        CountryData.objects.all().delete()
+        print("🧼 Database cleared.")
+
         for filename in os.listdir(data_dir):
             if filename.endswith('.txt'):
+                # Normalize and lower the filename
                 name_raw = filename.replace('.txt', '').replace('_', '').replace('-', '').lower()
-                country_name = display_names.get(name_raw, name_raw.title())
+                country_name = display_names.get(name_raw, name_raw.title())  # Use clean name if mapped
 
-                print(f"📛 Raw: {name_raw} → Display: {country_name}")
+                print(f"📄 Loading data for {country_name} (raw: {name_raw})")
 
-                CountryData.objects.filter(country=country_name).delete()
                 file_path = os.path.join(data_dir, filename)
-
                 with open(file_path, 'r') as file:
                     for line in file:
                         line = line.strip()
@@ -57,5 +61,4 @@ class Command(BaseCommand):
                             )
                             print(f"  ✔ Year {year} added for {country_name}")
                         except (IndexError, ValueError) as e:
-                            print(f"⚠️ Skipping bad line in {country_name}: {line} — {e}")
-                            continue
+                            print(f"⚠️ Skipping bad line: {line} — {e}")

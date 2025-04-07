@@ -55,6 +55,10 @@ def search_country_year(request):
                 error = "No data found for that country and year."
             except ValueError:
                 error = "⚠️ Year must be a number."
+    from pprint import pprint
+    print("📊 All countries in DB:")
+    pprint(CountryData.objects.values_list('country', flat=True).distinct())
+
 
     return render(request, 'countries/search_form.html', {
         'result': result,
