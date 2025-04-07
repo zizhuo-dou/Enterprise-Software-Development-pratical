@@ -3,9 +3,29 @@
 <head>
     <title>Country Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            padding: 10px 20px;
+            margin: 0;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+    
+        form {
+            margin-bottom: 20px;
+        }
+    
+        select, input[type="submit"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>    
 </head>
 <body>
-    <h1>Population vs Pollution by Country</h1>
+    <h1>Population vs Population Affected by Pollution by Country</h1>
     <form method="POST">
         {% csrf_token %}
         <select name="country">
@@ -19,9 +39,25 @@
     </form>
 
     {% if chart_data %}
-        <h2>{{ chart_data.country }} (1990–2017)</h2>
-        <canvas id="populationChart" width="600" height="400"></canvas>
-        <script>
+        <h2>{{ chart_data.country }} (1990-2017)</h2>
+        <div style="width: 100%; max-width: 900px; height: 400px; margin: 30px auto 0; display: block;">
+            <canvas id="populationChart"></canvas>
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="{% url 'search_country_year' %}" style="
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #08315c;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 16px;
+            ">
+                ← Return to Search Page
+            </a>
+        </div>
+        
+                                <script>
             const ctx = document.getElementById('populationChart').getContext('2d');
             const chart = new Chart(ctx, {
                 type: 'bar',
@@ -31,29 +67,39 @@
                         {
                             label: 'Population (mil)',
                             data: {{ chart_data.populations|safe }},
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(27, 78, 112, 0.77)',
+                            borderColor: 'rgb(0, 0, 0)',
                             borderWidth: 1
                         },
                         {
                             label: 'Pollution Affected (mil)',
                             data: {{ chart_data.pollution|safe }},
-                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(149, 23, 50, 0.75)',
+                            borderColor: 'rgb(0, 0, 0)',
                             borderWidth: 1
                         }
                     ]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
                     }
                 }
             });
-        </script>
+                    </script>
     {% endif %}
 </body>
 </html>

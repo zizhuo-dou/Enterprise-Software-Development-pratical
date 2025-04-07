@@ -1,101 +1,192 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Search Country Data</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center; 
-            min-height: 100vh;
-            background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            margin: 0;
-            text-align: center; 
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        background-color: #f9fafb;
+        font-family: 'Inter', sans-serif;
+        padding: 40px 20px;
+        margin: 0;
+    }
+
+    h1 {
+        color: #222;
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+
+    .search-form {
+        background-color: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .form-group {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 15px;
+        color: #444;
+    }
+
+    select, input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        background-color: #fefefe;
+        transition: border-color 0.2s;
+    }
+
+    select:focus, input[type="submit"]:focus {
+        outline: none;
+        border-color: #2563eb;
+    }
+
+    input[type="submit"] {
+        background-color: #2563eb;
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.2s;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #1e40af;
+    }
+
+    .result {
+        margin-top: 40px;
+        background-color: #ecfdf5;
+        color: #065f46;
+        padding: 20px;
+        border: 1px solid #d1fae5;
+        border-radius: 12px;
+        font-size: 16px;
+        max-width: 500px;
+    }
+
+    .error {
+        margin-top: 20px;
+        color: #dc2626;
+        background: #fef2f2;
+        padding: 12px 18px;
+        border: 1px solid #fecaca;
+        border-radius: 10px;
+        font-weight: 500;
+        max-width: 500px;
+    }
+
+    form[action$="chart/"] {
+        margin-top: 20px;
+    }
+</style>
+
+    <script>
+        const yearOptions = {{ year_options|safe }};
+
+        function populateYears() {
+            const countrySelect = document.getElementById("country");
+            const yearSelect = document.getElementById("year");
+            const selectedCountry = countrySelect.value;
+            yearSelect.innerHTML = '<option value="">-- Select a Year --</option>';
+
+            if (yearOptions[selectedCountry]) {
+                const years = yearOptions[selectedCountry].sort();
+                years.forEach(year => {
+                    const option = document.createElement("option");
+                    option.value = year;
+                    option.text = year;
+                    yearSelect.appendChild(option);
+                });
+            }
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            font-size: 46px
-        }
-
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 400px;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color:rgb(7, 52, 101);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color:rgb(15, 91, 172);
-        }
-
-        .result {
-            margin-top: 30px;
-            background-color:rgb(162, 215, 162);
-            padding: 15px;
-            border: 1px solidrgb(51, 65, 51);
-            border-radius: 6px;
-            font-size: 16px;
-        }
-    </style>
+        // Populate years on page load if country already selected (e.g. after POST)
+        window.onload = function() {
+            populateYears();
+            // Auto-select year if it was submitted
+            const selectedYear = "{{ selected_year|default:'' }}";
+            if (selectedYear) {
+                document.getElementById("year").value = selectedYear;
+            }
+        };
+    </script>
 </head>
 <body>
+
     <h1>Search</h1>
-    <form method="POST">
+
+    <form method="POST" class="search-form">
         {% csrf_token %}
-        <label for="country">Country:</label>
-        <input type="text" name="country" id="country" placeholder="e.g. China">
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <select name="country" id="country" onchange="populateYears()" required>
+                <option value="">-- Select a Country --</option>
+                {% for country in year_options %}
+                    <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
+                        {{ country|title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <label for="year">Year:</label>
-        <input type="number" name="year" id="year" placeholder="e.g. 2000">
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <select name="year" id="year" required>
+                <option value="">-- Select a Year --</option>
+                <!-- JS will fill this -->
+            </select>
+        </div>
 
-        <input type="submit" value="Search">
+        <div class="form-group">
+            <input type="submit" value="Search">
+        </div>
     </form>
 
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
     {% if result %}
-        {% if result.country %}
-            <div class="result">
-                <h2>Result:</h2>
-                <p>Country: {{ result.country }}</p>
-                <p>Year: {{ result.year }}</p>
-                <p>Population (mil): {{ result.population }}</p>
-                <p>Population Affected by Pollution (mil): {{ result.pollution_affected }}</p>
-            </div>
-        {% else %}
-            <p>{{ result }}</p>
-        {% endif %}
+        <div class="result">
+            <h2>Result:</h2>
+            <p>Country: {{ result.country }}</p>
+            <p>Year: {{ result.year }}</p>
+            <p>Population (mil): {{ result.population }}</p>
+            <p>Population Affected by Pollution (mil): {{ result.pollution_affected }}</p>
+        </div>
+
+        <form method="POST" action="{% url 'country_chart' %}" style="margin-top: 20px;">
+            {% csrf_token %}
+            <input type="hidden" name="country" value="{{ result.country|lower }}">
+            <input type="submit" value="View Full Chart">
+        </form>
     {% endif %}
 
 </body>
 </html>
-
