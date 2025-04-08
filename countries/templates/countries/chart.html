@@ -22,6 +22,16 @@
             font-size: 16px;
             margin-top: 10px;
         }
+
+        #bar-info {
+            background: #f0f9ff;
+            border: 1px solid #cfe2ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
     </style>    
 </head>
 <body>
@@ -42,6 +52,7 @@
         <h2>{{ chart_data.country }} (1990-2017)</h2>
         <div style="width: 100%; max-width: 900px; height: 400px; margin: 30px auto 0; display: block;">
             <canvas id="populationChart"></canvas>
+            <div id="bar-info" style="margin: 80px auto 40px; font-size: 16px; max-width: 500px;"></div>
         </div>
         <div style="margin-top: 20px;">
             <a href="{% url 'search_country_year' %}" style="
@@ -59,6 +70,7 @@
         
         <script>
             const ctx = document.getElementById('populationChart').getContext('2d');
+        
             const chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -67,15 +79,15 @@
                         {
                             label: 'Population (mil)',
                             data: {{ chart_data.populations|safe }},
-                            backgroundColor: 'rgba(27, 78, 112, 0.77)',
-                            borderColor: 'rgb(0, 0, 0)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
                             borderWidth: 1
                         },
                         {
                             label: 'Population Affected by Pollution (mil)',
                             data: {{ chart_data.pollution|safe }},
-                            backgroundColor: 'rgba(149, 23, 50, 0.75)',
-                            borderColor: 'rgb(0, 0, 0)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
                             borderWidth: 1
                         }
                     ]
@@ -83,6 +95,27 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onClick: (e) => {
+                        const points = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                        if (points.length > 0) {
+                            const point = points[0];
+                            const datasetIndex = point.datasetIndex;
+                            const index = point.index;
+                            const year = chart.data.labels[index];
+                
+                            const datasetLabel = chart.data.datasets[datasetIndex].label;
+                            const value = chart.data.datasets[datasetIndex].data[index];
+                
+                            let message = `<strong> Year:</strong> ${year}<br>`;
+                            if (datasetLabel.includes('Pollution')) {
+                                message += `<strong> Population Affected by Pollution:</strong> ${value} million`;
+                            } else {
+                                message += `<strong> Population:</strong> ${value} million`;
+                            }
+                
+                            document.getElementById('bar-info').innerHTML = message;
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true
@@ -98,8 +131,8 @@
                         }
                     }
                 }
-            });
+                            });
         </script>
-    {% endif %}
+            {% endif %}
 </body>
 </html>
