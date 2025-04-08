@@ -4,11 +4,19 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from .models import CountryData
 
-COUNTRY_CHOICES = [
-    'australia', 'brazil', 'china', 'france', 'japan',
-    'newZealand', 'northAmerica', 'southAfrica', 'uganda', 'uk',
-    'yemen'
-]
+COUNTRY_CHOICES = {
+    "australia": "Australia",
+    "brazil": "Brazil",
+    "china": "China",
+    "france": "France",
+    "japan": "Japan",
+    "newzealand": "New Zealand",
+    "northamerica": "North America",
+    "southafrica": "South Africa",
+    "uganda": "Uganda",
+    "uk": "UK",
+    "yemen": "Yemen"
+}
 
 def countries_data(request, country):
     data = CountryData.objects.filter(country=country).order_by('year')
@@ -27,7 +35,7 @@ def search_country_year(request):
     country_year_map = {}
 
     for country, year in country_years:
-        c = country.strip().title()
+        c = country.strip()
         if c not in country_year_map:
             country_year_map[c] = []
         if year not in country_year_map[c]:
@@ -37,7 +45,7 @@ def search_country_year(request):
     error = None
 
     if request.method == 'POST':
-        country = request.POST.get('country', '').strip().title()
+        country = request.POST.get('country', '').strip()
         year = request.POST.get('year', '').strip()
 
         if not country or not year:
@@ -123,14 +131,16 @@ def parse_country_file(country):
 def country_chart_view(request):
     chart_data = None
     selected_country = None
+    selected_country_key = None
 
     if request.method == 'POST':
-        selected_country = request.POST.get('country', '').strip()
-        if selected_country in COUNTRY_CHOICES:
-            chart_data = parse_country_file(selected_country)
+        selected_country_key = request.POST.get('country')
+        if selected_country_key in COUNTRY_CHOICES:
+            chart_data = parse_country_file(selected_country_key)
+            chart_data['country'] = COUNTRY_CHOICES[selected_country_key]
 
     return render(request, 'countries/chart.html', {
         'chart_data': chart_data,
         'countries': COUNTRY_CHOICES,
-        'selected_country': selected_country
+        'selected_country': selected_country_key,
     })

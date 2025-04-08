@@ -29,9 +29,9 @@
     <form method="POST">
         {% csrf_token %}
         <select name="country">
-            {% for country in countries %}
-                <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
-                    {{ country|title }}
+            {% for key, label in countries.items %}
+                <option value="{{ key }}" {% if key == selected_country %}selected{% endif %}>
+                {{ label }}
                 </option>
             {% endfor %}
         </select>
@@ -57,7 +57,7 @@
             </a>
         </div>
         
-                                <script>
+        <script>
             const ctx = document.getElementById('populationChart').getContext('2d');
             const chart = new Chart(ctx, {
                 type: 'bar',
@@ -99,7 +99,7 @@
                     }
                 }
             });
-                    </script>
+        </script>
     {% endif %}
 </body>
 </html>

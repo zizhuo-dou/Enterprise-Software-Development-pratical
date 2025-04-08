@@ -147,7 +147,7 @@
                 <option value="">-- Select a Country --</option>
                 {% for country in year_options %}
                     <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
-                        {{ country|title }}
+                        {{ country }}
                     </option>
                 {% endfor %}
             </select>
