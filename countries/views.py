@@ -49,7 +49,7 @@ def search_country_year(request):
         year = request.POST.get('year', '').strip()
 
         if not country or not year:
-            error = "⚠️ Please enter both a country and a year."
+            error = "Sorry that's not a valid search. Please try again and enter both a country and a year."
         else:
             try:
                 data = CountryData.objects.get(country=country, year=int(year))
@@ -60,9 +60,9 @@ def search_country_year(request):
                     'pollution_affected': data.pollution_affected_mil
                 }
             except CountryData.DoesNotExist:
-                error = "No data found for that country and year."
+                error = "Sorry there is no recorded data found for that country and year."
             except ValueError:
-                error = "⚠️ Year must be a number."
+                error = "Sorry, please try again. The year must be a number."
     from pprint import pprint
     print("📊 All countries in DB:")
     pprint(CountryData.objects.values_list('country', flat=True).distinct())
@@ -93,7 +93,7 @@ def parse_country_file(country):
 
                 parts = line.split(',')
                 if len(parts) < 3:
-                    print(f"⚠️ Skipping line {line_number} (not enough commas): {line}")
+                    print(f"There was an issue. Skipping line {line_number} (not enough commas): {line}")
                     continue
 
                 try:
@@ -102,7 +102,7 @@ def parse_country_file(country):
                     poll_part = parts[2].split(':', 1)
 
                     if len(year_part) < 2 or len(pop_part) < 2 or len(poll_part) < 2:
-                        print(f"⚠️ Skipping malformed line {line_number}: {line}")
+                        print(f"There was an issue. Skipping malformed line {line_number}: {line}")
                         continue
 
                     year = year_part[1].strip()
@@ -114,11 +114,11 @@ def parse_country_file(country):
                     pollution.append(float(poll))
 
                 except ValueError as e:
-                    print(f"⚠️ Error parsing line {line_number}: {line} — {e}")
+                    print(f"There was an issue parsing the line {line_number}: {line} — {e}")
                     continue
 
     except FileNotFoundError:
-        print(f"🚫 File not found: {file_path}")
+        print(f"The file {file_path} was not found.")
         return None
 
     return {

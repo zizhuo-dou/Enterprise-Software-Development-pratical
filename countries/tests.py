@@ -6,10 +6,6 @@ from django.test import TestCase
 
 
 
-#integration tests
-
-
-
 
 
 #end-to-end tests

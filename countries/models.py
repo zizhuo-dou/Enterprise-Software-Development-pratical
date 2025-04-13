@@ -2,7 +2,7 @@ from django.db import models
 
 class CountryData(models.Model):
     year = models.IntegerField()
-    country = models.CharField(max_length=100)
+    country = models.CharField(max_length=250)
     population_mil = models.FloatField()
     pollution_affected_mil = models.FloatField()
 
