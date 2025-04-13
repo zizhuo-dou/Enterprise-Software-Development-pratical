@@ -1,3 +1,22 @@
 from django.test import TestCase
 
-# Create your tests here.
+# unit tests
+
+
+
+
+
+#integration tests
+
+
+
+
+
+#end-to-end tests
+
+
+
+
+
+
+#smoke tests
