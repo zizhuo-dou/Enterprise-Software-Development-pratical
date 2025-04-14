@@ -45,8 +45,8 @@ def search_country_year(request):
     error = None
 
     if request.method == 'POST':
-        country = request.POST.get('country', '').strip()
-        year = request.POST.get('year', '').strip()
+        country = request.POST.get('country')
+        year = request.POST.get('year')
 
         if not country or not year:
             error = "Sorry that's not a valid search. Please try again and enter both a country and a year."
@@ -64,7 +64,7 @@ def search_country_year(request):
             except ValueError:
                 error = "Sorry, please try again. The year must be a number."
     from pprint import pprint
-    print("📊 All countries in DB:")
+    print("All countries in this database:")
     pprint(CountryData.objects.values_list('country', flat=True).distinct())
 
 
@@ -93,7 +93,7 @@ def parse_country_file(country):
 
                 parts = line.split(',')
                 if len(parts) < 3:
-                    print(f"There was an issue. Skipping line {line_number} (not enough commas): {line}")
+                    print(f"There was an issue. Skipping line {line_number} due to not enough data: {line}")
                     continue
 
                 try:
@@ -102,7 +102,7 @@ def parse_country_file(country):
                     poll_part = parts[2].split(':', 1)
 
                     if len(year_part) < 2 or len(pop_part) < 2 or len(poll_part) < 2:
-                        print(f"There was an issue. Skipping malformed line {line_number}: {line}")
+                        print(f"There was an issue. Skipping incorrect line {line_number}: {line}")
                         continue
 
                     year = year_part[1].strip()
@@ -114,11 +114,11 @@ def parse_country_file(country):
                     pollution.append(float(poll))
 
                 except ValueError as e:
-                    print(f"There was an issue parsing the line {line_number}: {line} — {e}")
+                    print(f"There was an issue splitting the line {line_number} at the comma: {line} — {e}")
                     continue
 
     except FileNotFoundError:
-        print(f"The file {file_path} was not found.")
+        print(f"The file, {file_path}, was not found.")
         return None
 
     return {

@@ -4,109 +4,109 @@
     <title>Search Country Data</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        min-height: 100vh;
-        background-color: #f9fafb;
-        font-family: 'Inter', sans-serif;
-        padding: 40px 20px;
-        margin: 0;
-    }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #f9fafb;
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            margin: 0;
+        }
 
-    h1 {
-        color: #222;
-        font-size: 36px;
-        margin-bottom: 30px;
-    }
+        h1 {
+            color: #222;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
 
-    .search-form {
-        background-color: white;
-        padding: 30px;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        max-width: 400px;
-        width: 100%;
-    }
+        .search-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            max-width: 400px;
+            width: 100%;
+        }
 
-    .form-group {
-        width: 100%;
-        margin-bottom: 20px;
-    }
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
-    label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-        font-size: 15px;
-        color: #444;
-    }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #444;
+        }
 
-    select, input[type="submit"] {
-        width: 100%;
-        padding: 12px;
-        font-size: 15px;
-        border-radius: 10px;
-        border: 1px solid #ddd;
-        background-color: #fefefe;
-        transition: border-color 0.2s;
-    }
+        select, input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background-color: #fefefe;
+            transition: border-color 0.2s;
+        }
 
-    select:focus, input[type="submit"]:focus {
-        outline: none;
-        border-color: #2563eb;
-    }
+        select:focus, input[type="submit"]:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
 
-    input[type="submit"] {
-        background-color: #2563eb;
-        color: white;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-        cursor: pointer;
-        border: none;
-        transition: background-color 0.2s;
-    }
+        input[type="submit"] {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
 
-    input[type="submit"]:hover {
-        background-color: #1e40af;
-    }
+        input[type="submit"]:hover {
+            background-color: #1e40af;
+        }
 
-    .result {
-        margin-top: 40px;
-        background-color: #ecfdf5;
-        color: #065f46;
-        padding: 20px;
-        border: 1px solid #d1fae5;
-        border-radius: 12px;
-        font-size: 16px;
-        max-width: 500px;
-    }
+        .result {
+            margin-top: 40px;
+            background-color: #ecfdf5;
+            color: #065f46;
+            padding: 20px;
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            font-size: 16px;
+            max-width: 500px;
+        }
 
-    .error {
-        margin-top: 20px;
-        color: #dc2626;
-        background: #fef2f2;
-        padding: 12px 18px;
-        border: 1px solid #fecaca;
-        border-radius: 10px;
-        font-weight: 500;
-        max-width: 500px;
-    }
+        .error {
+            margin-top: 20px;
+            color: #dc2626;
+            background: #fef2f2;
+            padding: 12px 18px;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            font-weight: 500;
+            max-width: 500px;
+        }
 
-    form[action$="chart/"] {
-        margin-top: 20px;
-    }
-</style>
+        form[action$="chart/"] {
+            margin-top: 20px;
+        }
+    </style>
 
     <script>
-        const yearOptions = {{ year_options|safe }};
+        const yearOptions = {{year_options|safe}};
 
         function populateYears() {
             const countrySelect = document.getElementById("country");
@@ -127,7 +127,7 @@
 
         window.onload = function() {
             populateYears();
-            const selectedYear = "{{ selected_year|default:'' }}";
+            const selectedYear = "{{selected_year|default:''}}";
             if (selectedYear) {
                 document.getElementById("year").value = selectedYear;
             }
@@ -145,8 +145,8 @@
             <select name="country" id="country" onchange="populateYears()" required>
                 <option value="">-- Select a Country --</option>
                 {% for country in year_options %}
-                    <option value="{{ country }}" {% if country == selected_country %}selected{% endif %}>
-                        {{ country }}
+                    <option value="{{country}}" {% if country == selected_country %}selected{% endif %}>
+                        {{country}}
                     </option>
                 {% endfor %}
             </select>
@@ -165,21 +165,21 @@
     </form>
 
     {% if error %}
-        <p class="error">{{ error }}</p>
+        <p class="error">{{error}}</p>
     {% endif %}
 
     {% if result %}
         <div class="result">
             <h2>Result:</h2>
-            <p>Country: {{ result.country }}</p>
-            <p>Year: {{ result.year }}</p>
-            <p>Population (mil): {{ result.population }}</p>
-            <p>Population Affected by Pollution (mil): {{ result.pollution_affected }}</p>
+            <p>Country: {{result.country}}</p>
+            <p>Year: {{result.year}}</p>
+            <p>Population (mil): {{result.population}}</p>
+            <p>Population Affected by Pollution (mil): {{result.pollution_affected}}</p>
         </div>
 
         <form method="POST" action="{% url 'country_chart' %}" style="margin-top: 20px;">
             {% csrf_token %}
-            <input type="hidden" name="country" value="{{ result.country|lower }}">
+            <input type="hidden" name="country" value="{{result.country|lower}}">
             <input type="submit" value="View Full Chart">
         </form>
     {% endif %}
