@@ -109,7 +109,7 @@ def parse_country_file(country):
                     pop = pop_part[1].strip().replace(',', '')
                     poll = poll_part[1].strip().replace(',', '')
 
-                    years.append(year)
+                    years.append(int(parts[0].split(':')[1].strip()))
                     populations.append(float(pop))
                     pollution.append(float(poll))
 
