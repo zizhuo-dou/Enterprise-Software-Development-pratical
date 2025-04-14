@@ -28,6 +28,9 @@ def countries_data(request, country):
 
 from django.db.models import F
 
+def homepage(request):
+    return render(request, 'home.html')
+
 def search_country_year(request):
     from .models import CountryData
 
