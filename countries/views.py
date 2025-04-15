@@ -15,21 +15,21 @@ COUNTRY_CHOICES = {
     "southafrica": "South Africa",
     "uganda": "Uganda",
     "uk": "UK",
-    "yemen": "Yemen"
+    "yemen": "Yemen",
 }
 
 def countries_data(request, country):
     data = CountryData.objects.filter(country=country).order_by('year')
     return render(request, 'countries/countries_data.html', {
         'data': data,
-        'country': country
+        'country': country,
     })
 
 
 from django.db.models import F
 
 def homepage(request):
-    return render(request, 'home.html')
+    return render(request, 'homepage.html')
 
 def search_country_year(request):
     from .models import CountryData
@@ -60,7 +60,7 @@ def search_country_year(request):
                     'country': data.country,
                     'year': data.year,
                     'population': data.population_mil,
-                    'pollution_affected': data.pollution_affected_mil
+                    'pollution_affected': data.pollution_affected_mil,
                 }
             except CountryData.DoesNotExist:
                 error = "Sorry there is no recorded data found for that country and year."
@@ -76,7 +76,7 @@ def search_country_year(request):
         'error': error,
         'year_options': country_year_map,
         'selected_country': country,
-        'selected_year': year
+        'selected_year': year,
     })
 
 def parse_country_file(country):
