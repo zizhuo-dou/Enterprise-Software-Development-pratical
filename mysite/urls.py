@@ -22,5 +22,4 @@ from .views import search_country_year_api
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('countries/', include('countries.urls')), 
-    path('api/search/', search_country_year_api),
 ] 
