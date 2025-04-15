@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from countries import views
+from .views import search_country_year_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('countries/', include('countries.urls')),  
+    path('countries/', include('countries.urls')), 
+    path('api/search/', search_country_year_api),
 ] 
