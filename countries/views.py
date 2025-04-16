@@ -29,9 +29,14 @@ def countries_data(request, country):
 from django.db.models import F
 
 def homepage(request):
-    return render(request, 'home.html')
+    """This is to be used as an alternative to the API we had in our project proposal. Can still switch to using and API but 
+    will need to adjust the code and delete our homepage"""
+    return render(request, 'homepage.html')
 
 def search_country_year(request):
+    """Original code was made for input typed by the user. Still works so didn't see a reason to change the code. 
+    The HTML for this adjusted it to show a drop-down menu instead since we only had a 11 countries and a few years to 
+    display."""
     from .models import CountryData
 
     country_years = CountryData.objects.values_list('country', 'year')
@@ -80,6 +85,8 @@ def search_country_year(request):
     })
 
 def parse_country_file(country):
+    """This is soley to take the txt files for each country and parse them at specific spots. Included try and except 
+    conditions due to original issues that were coming up when we first wrote the code"""
     filename = f"{country}.txt"
     file_path = os.path.join(settings.BASE_DIR, 'countries', 'countries_data', filename)
 
@@ -132,6 +139,8 @@ def parse_country_file(country):
     }
 
 def country_chart_view(request):
+    """Specifically made to display the bar-chart. Could look to display this chart as a line graph but that would take 
+    mathematical equations so that we aren't displaying incorrect information."""
     chart_data = None
     selected_country = None
     selected_country_key = None

@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-j#ww@u78hm=w@5j0#m@-$ewu9*&k93u09(flo6sd3q7)e6&t@%
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'sita3@pythonanywhere.com']
-
+"""This is set up to one persons testing environment but is currently connected to other's githubs so can be adjusted as needed"""
 
 # Application definition
 
