@@ -51,6 +51,8 @@ def search_country_year(request):
 
     result = None
     error = None
+    country = None
+    year = None
 
     if request.method == 'POST':
         country = request.POST.get('country')
