@@ -3,8 +3,6 @@ from pathlib import Path
 from django.conf import settings
 from django.shortcuts import render, redirect
 from .models import CountryData
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 
 COUNTRY_CHOICES = {
     "australia": "Australia",
@@ -17,23 +15,23 @@ COUNTRY_CHOICES = {
     "southafrica": "South Africa",
     "uganda": "Uganda",
     "uk": "UK",
-    "yemen": "Yemen",
+    "yemen": "Yemen"
 }
 
 def countries_data(request, country):
     data = CountryData.objects.filter(country=country).order_by('year')
     return render(request, 'countries/countries_data.html', {
         'data': data,
-        'country': country,
+        'country': country
     })
 
 
 from django.db.models import F
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    return render(request, 'home.html')
 
-"""def search_country_year(request):
+def search_country_year(request):
     from .models import CountryData
 
     country_years = CountryData.objects.values_list('country', 'year')
@@ -62,7 +60,7 @@ def homepage(request):
                     'country': data.country,
                     'year': data.year,
                     'population': data.population_mil,
-                    'pollution_affected': data.pollution_affected_mil,
+                    'pollution_affected': data.pollution_affected_mil
                 }
             except CountryData.DoesNotExist:
                 error = "Sorry there is no recorded data found for that country and year."
@@ -70,31 +68,15 @@ def homepage(request):
                 error = "Sorry, please try again. The year must be a number."
     from pprint import pprint
     print("All countries in this database:")
-    pprint(CountryData.objects.values_list('country', flat=True).distinct())"""
-def search_country_year_api(request):
-    country = request.GET.get('country')
-    year = request.GET.get('year')
+    pprint(CountryData.objects.values_list('country', flat=True).distinct())
 
-    if not country or not year:
-        return Response({"error": "Country and year required"}, status=400)
-
-    try:
-        data = CountryData.objects.get(country=country, year=int(year))
-        return Response({
-            'country': data.country,
-            'year': data.year,
-            'population': data.population_mil,
-            'pollution_affected': data.pollution_affected_mil,
-        })
-    except CountryData.DoesNotExist:
-        return Response({"error": "No data found"}, status=404)
 
     return render(request, 'countries/search_form.html', {
         'result': result,
         'error': error,
         'year_options': country_year_map,
         'selected_country': country,
-        'selected_year': year,
+        'selected_year': year
     })
 
 def parse_country_file(country):
