@@ -9,8 +9,9 @@ from django.conf import settings
 import os
 
 
-# ✅ App Configuration Tests
+# App Configuration Tests
 class AppConfigTests(TestCase):
+    """this is to make sure our current opening page will open...however this will need to be adjusted as we create the homepage(either html or api)"""
     def test_app_config_name(self):
         self.assertEqual(CountriesConfig.name, 'countries')
 
@@ -19,8 +20,9 @@ class AppConfigTests(TestCase):
         self.assertIsInstance(app_config, CountriesConfig)
 
 
-# 🌐 View Tests
+# View Tests
 class ViewTests(TestCase):
+    """majority of our logic is in views so need to make sure it all works"""
     def setUp(self):
         self.client = Client()
         self.country = 'australia'
@@ -50,8 +52,9 @@ class ViewTests(TestCase):
         self.assertTemplateUsed(response, 'countries/countries_data.html')
 
 
-# 🧬 Model Tests
+# Model Tests
 class CountryDataModelTests(TestCase):
+    """making sure the data loads and displays correctly"""
     def test_model_creation(self):
         entry = CountryData.objects.create(
             country='australia',
@@ -63,10 +66,10 @@ class CountryDataModelTests(TestCase):
         self.assertEqual(entry.year, 1990)
 
 
-# 🧾 Utility Function Tests
+# Utility Function Tests
 class ParseCountryFileTests(TestCase):
+    """makes sure the parsing is working correctly from the files"""
     def test_parse_valid_file(self):
-        # Uses the real file from your dataset: australia.txt
         parsed = parse_country_file('australia')
         self.assertIn(1990, parsed['years'])
         self.assertIn(17.3, parsed['populations'])

@@ -20,5 +20,5 @@ from countries import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('countries/', include('countries.urls')), """Needs to be adjusted to show the homepage (whether that's html or we switch to API)"""
+    path('countries/', include('countries.urls')), #"""Needs to be adjusted to show the homepage (whether that's html or we switch to API)"""
 ] 
