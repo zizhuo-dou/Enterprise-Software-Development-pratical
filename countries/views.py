@@ -37,7 +37,7 @@ def search_country_year(request):
     """Original code was made for input typed by the user. Still works so didn't see a reason to change the code. 
     The HTML for this adjusted it to show a drop-down menu instead since we only had a 11 countries and a few years to 
     display."""
-    from .models import CountryData
+    # from .models import CountryData
 
     country_years = CountryData.objects.values_list('country', 'year')
     country_year_map = {}
@@ -75,7 +75,7 @@ def search_country_year(request):
                 error = "Sorry, please try again. The year must be a number."
     from pprint import pprint
     print("All countries in this database:")
-    pprint(CountryData.objects.values_list('country', flat=True).distinct())
+    print(CountryData.objects.values_list('country', flat=True).distinct())
 
 
     return render(request, 'countries/search_form.html', {
